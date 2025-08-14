@@ -9,5 +9,6 @@ public enum Key {
     LEFT,
     RIGHT,
     UP,
-    DOWN;
+    DOWN,
+    QQ;
 }

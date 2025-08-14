@@ -65,7 +65,7 @@ public class Game implements GameScreen {
     public void start() {
         JFrame jFrame = new JFrame();
 
-        jFrame.setDefaultCloseOperation(3);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.mapColors();
 
@@ -73,11 +73,11 @@ public class Game implements GameScreen {
 
         jFrame.addKeyListener(new GameKeyListener());
 
-        jFrame.setTitle("JavaRush Game");
+        jFrame.setTitle("Tic Tac Toe");
 
         jFrame.setResizable(false);
 
-        jFrame.setUndecorated(true);
+        jFrame.setUndecorated(false);
 
         jFrame.getContentPane().add(this.createSwingContent(), "Center");
 
@@ -630,34 +630,18 @@ public class Game implements GameScreen {
         }
 
         private Key getKey(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case 10:
-                    return Key.ENTER;
-
-                case 19:
-                    return Key.PAUSE;
-
-                case 27:
-                    return Key.ESCAPE;
-
-                case 32:
-                    return Key.SPACE;
-
-                case 37:
-                    return Key.LEFT;
-
-                case 38:
-                    return Key.UP;
-
-                case 39:
-                    return Key.RIGHT;
-
-                case 40:
-                    return Key.DOWN;
-
-                default:
-                    return Key.UNKNOWN;
-            }
+            return switch (e.getKeyCode()) {
+                case 10 -> Key.ENTER;
+                case 19 -> Key.PAUSE;
+                case 27 -> Key.ESCAPE;
+                case 32 -> Key.SPACE;
+                case 37 -> Key.LEFT;
+                case 38 -> Key.UP;
+                case 39 -> Key.RIGHT;
+                case 40 -> Key.DOWN;
+                case KeyEvent.VK_Q -> Key.QQ;
+                default -> Key.UNKNOWN;
+            };
         }
     }
 

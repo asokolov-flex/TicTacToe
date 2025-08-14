@@ -8,13 +8,29 @@ public class TicTacToeGame extends Game {
 
     private boolean isGameStopped;
 
+    // Add score tracking
+    private int playerScore = 0;
+
+    private int computerScore = 0;
+
+    private static final int WIN_POINTS = 10;
+
+    private static final int DRAW_POINTS = 5;
+
     @Override
     public void initialize() {
         setScreenSize(3, 3);
 
+        playerScore = 0;
+
+        computerScore = 0;
+
         startGame();
 
         updateView();
+
+        updateScoreDisplay();
+
     }
 
     public void startGame() {
@@ -27,6 +43,16 @@ public class TicTacToeGame extends Game {
             }
         }
     }
+
+    private void updateScoreDisplay() {
+
+        boolean isZero = (playerScore - computerScore) < 0;
+
+        setScore(isZero ? 0 : playerScore); // Using inherited setScore method to display player's score
+
+        computerScore = 0;
+    }
+
 
     /**
      * Updates the visual representation of the entire game board.
@@ -80,12 +106,22 @@ public class TicTacToeGame extends Game {
             isGameStopped = true;
 
             if (currentPlayer == 1) {
+                playerScore += WIN_POINTS;
+
                 showMessageDialog(Color.NONE, "You Win!", Color.GREEN, 75);
+
+                SoundManager.playScoreSound();
             }
 
             if (currentPlayer == 2) {
+                computerScore += WIN_POINTS;
+
                 showMessageDialog(Color.NONE, "Game Over", Color.RED, 75);
+
+                SoundManager.playLoseSound();
             }
+
+            updateScoreDisplay();
 
             return;
         }
@@ -93,9 +129,16 @@ public class TicTacToeGame extends Game {
         if (!hasEmptyCell()) {
             isGameStopped = true;
 
+            // In case of draw, both players get some points
+            playerScore += DRAW_POINTS;
+            computerScore += DRAW_POINTS;
+
             showMessageDialog(Color.NONE, " Draw!", Color.BLUE, 75);
 
-            return;
+            SoundManager.playScoreSound();
+
+            updateScoreDisplay();
+
         }
     }
 
@@ -117,6 +160,8 @@ public class TicTacToeGame extends Game {
         if (model[x][y] != 0) {
             return;
         }
+
+        SoundManager.playCollisionSound();
 
         setSignAndCheck(x, y);
 
@@ -182,7 +227,10 @@ public class TicTacToeGame extends Game {
             startGame();
 
             updateView();
+        } else if (key == Key.QQ) {
+            System.exit(0);  // Close the application
         }
+
     }
 
     /**
